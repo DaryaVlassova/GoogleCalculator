@@ -8,6 +8,6 @@ import cucumber.api.junit.Cucumber;
 @RunWith(Cucumber.class)
 @CucumberOptions(features = "src/test/resources/features", glue = "simpleEdit", dryRun = true)
 public class CukesRunner {
-	System.out.println("changed");
+	
      
 }
