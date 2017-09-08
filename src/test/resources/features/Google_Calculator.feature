@@ -1,3 +1,4 @@
+@Smoke
 Feature: Displaying result
 Scenario: verify the calculator is displayed
 Given: I'm on google search page
