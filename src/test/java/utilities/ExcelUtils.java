@@ -1,13 +1,17 @@
 package utilities;
 
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 public class ExcelUtils {
 
@@ -77,7 +81,60 @@ public class ExcelUtils {
 			e.printStackTrace();
 			return 0;
 		}
+	}
 
+	public static int getUsedColumnCount() {
+		int columnCount = excelWSheet.getRow(getUsedRowsCount()).getPhysicalNumberOfCells();
+		return columnCount;
+
+	}
+
+	public static File getLatestFileFromDir(String dirPath) {
+		// path to the folder where all the files are located
+		File dir = new File(dirPath);
+		File[] files = dir.listFiles();
+		if (files == null || files.length == 0) {
+			return null;
+		}
+		File lastModifiedFile = files[0];
+		for (int i = 1; i < files.length; i++) {
+			if (lastModifiedFile.lastModified() < files[i].lastModified()) {
+				lastModifiedFile = files[i];
+
+			}
+		}
+		return lastModifiedFile;
+
+	}
+
+	public static void createExcelFile(String fileName, String sheetName) {
+		try {
+			FileOutputStream excelFile = new FileOutputStream(fileName);
+			excelWBook = new XSSFWorkbook();
+			excelWSheet = excelWBook.createSheet(sheetName);
+			excelWBook.write(excelFile);
+			excelFile.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		}
+	}
+
+	public static List<String[]> getSheetContent() {
+		List<String[]> sheetContent = new ArrayList<>();
+		int columnCount = getUsedColumnCount();
+		int rowCount = getUsedRowsCount();
+		if (columnCount == 0 || rowCount == 0) {
+			return null;
+		}
+		for (int currentRow = 0; currentRow < rowCount; currentRow++) {
+			String[] rowData = new String[columnCount];
+			for (int cell = 0; cell < columnCount; cell++) {
+				rowData[cell] = getCellData(currentRow, cell);
+			}
+			sheetContent.add(rowData);
+		}
+		return sheetContent;
 	}
 
 }
