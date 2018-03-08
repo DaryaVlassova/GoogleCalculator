@@ -9,6 +9,7 @@ import utilities.Driver;
 public class CalculatorPage {
 	public CalculatorPage() {
 		PageFactory.initElements(Driver.getInstance(), this);
+
 	}
 
 	@FindBy(id = "lst-ib")
