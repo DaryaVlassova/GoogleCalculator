@@ -1,7 +1,6 @@
 package simpleEdit;
 
 import java.awt.Robot;
-import java.awt.Toolkit;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.KeyEvent;
 
@@ -33,18 +32,21 @@ public class Gmail {
 
 	@Given("^I enter valid \"([^\"]*)\" email$")
 	public void i_enter_valid_email(String email) throws Throwable {
-
 		home.email.sendKeys(email);
+
 		home.nextButton.click();
 		Thread.sleep(3000);
 	}
 
 	@Then("^I enter valid \"([^\"]*)\" password$")
 	public void i_enter_valid_password(String password) throws Throwable {
+		home.password.sendKeys(password);
+		Thread.sleep(3000);
 
-		actions.moveToElement(home.password);
-		actions.sendKeys(password);
-		actions.build().perform();
+		// actions.moveToElement(home.password);
+		// Thread.sleep(6000);
+		// actions.sendKeys(password);
+		// actions.build().perform();
 
 	}
 
@@ -60,6 +62,7 @@ public class Gmail {
 
 		account.nameTag.click();
 		String actualName = account.name.getText();
+		System.out.println(actualName);
 		Assert.assertEquals(name, actualName);
 
 	}
@@ -83,24 +86,44 @@ public class Gmail {
 
 	@Then("^I upload file$")
 	public void i_upload_file() throws Throwable {
-		StringSelection ss = new StringSelection(
-				"/Users/daryavlassova/Desktop/161201161116-83-year-in-pictures-2016-restricted-super-169.jpg");
-
-		Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss, null);
-
-		// imitate mouse events like ENTER, CTRL+C, CTRL+V
+		StringSelection ss = new StringSelection("//Users//daryavlassova//Desktop//employee.xlsx");
+		// copy to clipboard
+		// Toolkit.getDefaultToolkit().getSystemClipboard().setContents(ss,
+		// null);
 		Robot robot = new Robot();
-		robot.delay(250);
+		// cmd+tab
+		// robot.keyPress(KeyEvent.VK_META);
+		// robot.keyPress(KeyEvent.VK_TAB);
+		// robot.keyPress(KeyEvent.VK_META);
+		// robot.keyRelease(KeyEvent.VK_TAB);
+		// Thread.sleep(5000);
 
-		robot.keyPress(KeyEvent.VK_RIGHT);
-		robot.keyPress(KeyEvent.VK_RIGHT);
-		robot.keyPress(KeyEvent.VK_RIGHT);
+		// Go Window
+		// cmd+shift+g
+
+		robot.keyPress(KeyEvent.VK_META);
+		robot.keyPress(KeyEvent.VK_SHIFT);
+		robot.keyRelease(KeyEvent.VK_G);
+		robot.keyPress(KeyEvent.VK_META);
+		robot.keyPress(KeyEvent.VK_SHIFT);
+		robot.keyRelease(KeyEvent.VK_G);
+
+		// Paste the clibboard value
+		robot.keyPress(KeyEvent.VK_META);
+		robot.keyRelease(KeyEvent.VK_V);
+		robot.keyPress(KeyEvent.VK_META);
+		robot.keyRelease(KeyEvent.VK_V);
+		// Hit Enter
+		robot.keyPress(KeyEvent.VK_ENTER);
 		robot.keyRelease(KeyEvent.VK_ENTER);
 
+		Thread.sleep(2000);
+		robot.keyPress(KeyEvent.VK_ENTER);
+		robot.keyRelease(KeyEvent.VK_ENTER);
 	}
 
 	@Then("^i click on send button$")
 	public void i_click_on_send_button() throws Throwable {
-
+		account.send.click();
 	}
 }

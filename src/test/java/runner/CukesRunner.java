@@ -6,7 +6,7 @@ import cucumber.api.CucumberOptions;
 import cucumber.api.junit.Cucumber;
 
 @RunWith(Cucumber.class)
-@CucumberOptions(features = "src/test/resources/features", glue = "simpleEdit", tags = "@Smoke", dryRun = false)
+@CucumberOptions(features = "src/test/resources/features", glue = "simpleEdit", tags = "@Gmail", dryRun = false)
 public class CukesRunner {
 
 }
